@@ -29,16 +29,6 @@ function start() {
 
   let aRow = 1;
   let aCol = 4;
-  console.log("******* EAST ********");
-  console.log("find east for:", { row: aRow, col: aCol }, " value:", myGrid.indexFor({ row: aRow, col: aCol }));
-  console.log("east:", myGrid.east({ row: aRow, col: aCol }));
-  console.log("nextInRow:", myGrid.nextInRow({ row: aRow, col: aCol }));
-  
-
-  console.log("******* WEST ********");
-  console.log("find west for:", { row: aRow, col: aCol }, " value:", myGrid.indexFor({ row: aRow, col: aCol }));
-  console.log("west:", myGrid.west({ row: aRow, col: aCol }));
-
   console.log("******* NORTH ********");
   console.log("find north for:", { row: aRow, col: aCol }, " value:", myGrid.indexFor({ row: aRow, col: aCol }));
   console.log("north:", myGrid.north({ row: aRow, col: aCol }));
@@ -48,9 +38,16 @@ function start() {
   console.log("south:", myGrid.south({ row: aRow, col: aCol }));
   console.log("nextInCol:", myGrid.nextInCol({ row: aRow, col: aCol }));
 
+  console.log("******* EAST ********");
+  console.log("find east for:", { row: aRow, col: aCol }, " value:", myGrid.indexFor({ row: aRow, col: aCol }));
+  console.log("east:", myGrid.east({ row: aRow, col: aCol }));
+  console.log("nextInRow:", myGrid.nextInRow({ row: aRow, col: aCol }));
+
+  console.log("******* WEST ********");
+  console.log("find west for:", { row: aRow, col: aCol }, " value:", myGrid.indexFor({ row: aRow, col: aCol }));
+  console.log("west:", myGrid.west({ row: aRow, col: aCol }));
+
   console.log("");
-  console.log("Neighbour cells:",myGrid.neighbours({ row: aRow, col: aCol }));
-  console.log("Neighbour cells values:",myGrid.neighbourValues({ row: aRow, col: aCol }));
-  
-  
+  console.log("Neighbour cells:", myGrid.neighbours({ row: aRow, col: aCol }));
+  console.log("Neighbour cells values:", myGrid.neighbourValues({ row: aRow, col: aCol }));
 }

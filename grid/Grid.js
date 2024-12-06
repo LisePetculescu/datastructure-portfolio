@@ -14,6 +14,14 @@ export default class Grid {
     console.log(this.grid);
   }
 
+  paramsHelper(rowOrObj, col) {
+    if (typeof rowOrObj === "object") {
+      return rowOrObj;
+    } else {
+      return { row: rowOrObj, col: col };
+    }
+  }
+
   //   - `set( row, col, value )` - sætter `value` på den angivne plads.
   set({ row, col }, value) {
     this.grid[row][col] = value;
@@ -39,14 +47,16 @@ export default class Grid {
   // !! CELLE er hele objekett med row og col + value !!
 
   // - `neighbours( row, col )` - returnerer en liste over alle naboceller til denne (i form af `{row, col}` objekter
-  neighbours({ row, col }) {
+  neighbours(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     let neighbours = [];
     neighbours.push(this.north({ row, col }), this.south({ row, col }), this.east({ row, col }), this.west({ row, col }));
     return neighbours;
   }
 
   // - `neighbourValues( row, col )` - returnerer en liste over alle nabocellers values.
-  neighbourValues({ row, col }) {
+  neighbourValues(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     let values = [];
     this.neighbours({ row, col }).forEach((neighbour) => {
       values.push(neighbour.value);
@@ -57,17 +67,20 @@ export default class Grid {
   // Når der skal returneres en celle, kan du give et objekt med `{row, col, value}`
 
   // - `nextInRow( row, col )` - returnerer cellen til højre efter denne, eller undefined hvis der ikke er flere i den **row**
-  nextInRow({ row, col }) {
+  nextInRow(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     return this.east({ row, col });
   }
 
   // - `nextInCol( row, col )` - returnerer cellen under denne, eller undefined hvis der ikke er flere i den **col**
-  nextInCol({ row, col }) {
+  nextInCol(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     return this.south({ row, col });
   }
 
   // - `north( row, col )` - returnerer cellen over denne, eller undefined, hvis der ikke er nogen
-  north({ row, col }) {
+  north(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     if (row - 1 < 0 || col >= this.cols()) {
       return undefined;
     } else {
@@ -76,7 +89,8 @@ export default class Grid {
   }
 
   // - `south( row, col )` - returnerer cellen under denne, eller undefined, hvis der ikke er nogen
-  south({ row, col }) {
+  south(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     if (row + 1 >= this.rows() || col >= this.cols()) {
       return undefined;
     } else {
@@ -85,7 +99,8 @@ export default class Grid {
   }
 
   // - `west( row, col )` - returnerer cellen til venstre for denne, eller undefined, hvis der ikke er nogen
-  west({ row, col }) {
+  west(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     if (row >= this.rows() || col - 1 < 0) {
       return undefined;
     } else {
@@ -94,7 +109,8 @@ export default class Grid {
   }
 
   // - `east( row, col )` - returnerer cellen til højre for denne, eller undefined, hvis der ikke er nogen
-  east({ row, col }) {
+  east(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     if (row >= this.rows() || col + 1 >= this.cols()) {
       return undefined;
     } else {
