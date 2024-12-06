@@ -23,17 +23,20 @@ export default class Grid {
   }
 
   //   - `set( row, col, value )` - sætter `value` på den angivne plads.
-  set({ row, col }, value) {
+  set(rowOrObj, colParam, value) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     this.grid[row][col] = value;
   }
 
   // - `get( row, col )` - returnerer `value` på den angivne plads
-  get({ row, col }) {
+  get(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     return this.grid[row][col];
   }
 
   // - `indexFor( row, col )` - returnerer index (nummeret) på cellen i denne række+kolonne
-  indexFor({ row, col }) {
+  indexFor(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
     return row * this.cols() + col;
   }
 
