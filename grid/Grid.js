@@ -1,88 +1,131 @@
-class Grid {
-  #rows;
-  #cols;
-  #grid = [];
+export default class Grid {
+  grid = [];
 
   constructor(rows, cols) {
-    this.#rows = rows;
-    this.#cols = cols;
-    this.initGrid();
-  }
-
-  initGrid() {
-    for (let row = 0; row < this.#rows; row++) {
-      for (let col = 0; col < this.#cols; col++) {
-        this.#grid[row][col] = 0;
+    this.grid = [];
+    let i = 0;
+    for (let r = 0; r < rows; r++) {
+      this.grid.push([]);
+      for (let c = 0; c < cols; c++) {
+        this.grid[r].push(i++);
       }
     }
-  }
-
-  // call everytime a method gets row and col as args. 
-  _convertToRowCol(rowOrObj, col, value) {
-    if (typeof rowOrObj === 'object') {
-        return {row: rowOrObj.row, col: rowOrObj.col, value: value}
-    }
-    return {row: rowOrObj, col: col, value: value}
-    
+    // this.grid = [[0,1,2,3],[0,1,2,3],[0,1,2,3]];
+    console.log(this.grid);
   }
 
   //   - `set( row, col, value )` - sætter `value` på den angivne plads.
-  set(row, col, value) {
-    let { row, col } = this._convertToRowCol(rowOrObj, col, value);
-    let index = this.indexFor(row, column);
-    if (index !== undefined) {
-      this.#grid[index] = value;
-    }
+  set({ row, col }, value) {
+    this.grid[row][col] = value;
   }
 
   // - `get( row, col )` - returnerer `value` på den angivne plads
-  get(row, col) {}
+  get({ row, col }) {
+    return this.grid[row][col];
+  }
 
   // - `indexFor( row, col )` - returnerer index (nummeret) på cellen i denne række+kolonne
-  indexFor(row, col) {
-
+  indexFor({ row, col }) {
+    return row * this.cols() + col;
   }
 
   // - `rowColFor( index )` - returnerer et `{row, col}` objekt for cellen med dette index (nummer)
-  rowColFor(index) {}
+  rowColFor(index) {
+    let row = Math.floor(index / this.cols());
+    let col = index % this.cols();
+    return { row, col };
+  }
+
+  // !! CELLE er hele objekett med row og col + value !!
 
   // - `neighbours( row, col )` - returnerer en liste over alle naboceller til denne (i form af `{row, col}` objekter
-  neighbours(row, col) {}
+  neighbours({ row, col }) {
+    let neighbours = [];
+    neighbours.push(this.north({ row, col }), this.south({ row, col }), this.east({ row, col }), this.west({ row, col }));
+    return neighbours;
+  }
 
   // - `neighbourValues( row, col )` - returnerer en liste over alle nabocellers values.
-  neighbourValues(row, col) {}
+  neighbourValues({ row, col }) {
+    let values = [];
+    this.neighbours({ row, col }).forEach((neighbour) => {
+      values.push(neighbour.value);
+    });
+    return values;
+  }
 
   // Når der skal returneres en celle, kan du give et objekt med `{row, col, value}`
 
   // - `nextInRow( row, col )` - returnerer cellen til højre efter denne, eller undefined hvis der ikke er flere i den **row**
-  nextInRow(row, col) {}
+  nextInRow({ row, col }) {
+    return this.east({ row, col });
+  }
 
   // - `nextInCol( row, col )` - returnerer cellen under denne, eller undefined hvis der ikke er flere i den **col**
-  nextInCol(row, col) {}
+  nextInCol({ row, col }) {
+    return this.south({ row, col });
+  }
 
   // - `north( row, col )` - returnerer cellen over denne, eller undefined, hvis der ikke er nogen
-  north(row, col) {}
+  north({ row, col }) {
+    if (row - 1 < 0 || col >= this.cols()) {
+      return undefined;
+    } else {
+      return { row: row - 1, col, value: this.grid[row - 1][col] };
+    }
+  }
 
   // - `south( row, col )` - returnerer cellen under denne, eller undefined, hvis der ikke er nogen
-  south(row, col) {}
+  south({ row, col }) {
+    if (row + 1 >= this.rows() || col >= this.cols()) {
+      return undefined;
+    } else {
+      return { row: row + 1, col, value: this.grid[row + 1][col] };
+    }
+  }
 
   // - `west( row, col )` - returnerer cellen til venstre for denne, eller undefined, hvis der ikke er nogen
-  west(row, col) {}
+  west({ row, col }) {
+    if (row >= this.rows() || col - 1 < 0) {
+      return undefined;
+    } else {
+      return { row, col: col - 1, value: this.grid[row][col - 1] };
+    }
+  }
 
   // - `east( row, col )` - returnerer cellen til højre for denne, eller undefined, hvis der ikke er nogen
-  east(row, col) {}
+  east({ row, col }) {
+    if (row >= this.rows() || col + 1 >= this.cols()) {
+      return undefined;
+    } else {
+      return { row, col: col + 1, value: this.grid[row][col + 1] };
+    }
+  }
 
   // Der skal være et par metoder til at fortælle noget om strukturen
 
   // - `rows()` - returnerer antallet af rækker
-  rows() {}
+  rows() {
+    return this.grid.length;
+  }
 
   // - `cols()` - returnerer antallet af kolonner
-  cols() {}
+  cols() {
+    return this.grid[0].length;
+  }
 
   // - `size()` - returnerer det samlede antal celler
-  size() {}
+  size() {
+    return this.rows() * this.cols();
+  }
 
   // - `fill( value )` - skriver den angivne value ind i alle celler
-  fill(value) {}
+  fill(value) {
+    for (let r = 0; r < this.rows(); r++) {
+      for (let c = 0; c < this.cols(); c++) {
+        this.grid[r][c] = value;
+      }
+    }
+    // return value;
+  }
 }
