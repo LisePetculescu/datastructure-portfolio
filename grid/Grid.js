@@ -53,8 +53,8 @@ export default class Grid {
   neighbours(rowOrObj, colParam) {
     const { row, col } = this.paramsHelper(rowOrObj, colParam);
     let neighbours = [];
-    neighbours.push(this.north({ row, col }), this.south({ row, col }), this.east({ row, col }), this.west({ row, col }));
-    return neighbours;
+    neighbours.push(this.north({ row, col }), this.south({ row, col }), this.east({ row, col }), this.west({ row, col }), this.northEast({ row, col }), this.northWest({ row, col }), this.southEast({ row, col }), this.southWest({ row, col }));
+    return neighbours.filter((neighbor) => neighbor !== undefined);
   }
 
   // - `neighbourValues( row, col )` - returnerer en liste over alle nabocellers values.
@@ -118,6 +118,42 @@ export default class Grid {
       return undefined;
     } else {
       return { row, col: col + 1, value: this.grid[row][col + 1] };
+    }
+  }
+
+  northEast(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
+    if (row - 1 < 0 || col + 1 >= this.cols()) {
+      return undefined;
+    } else {
+      return { row: row - 1, col: col + 1, value: this.grid[row - 1][col + 1] };
+    }
+  }
+
+  northWest(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
+    if (row - 1 < 0 || col - 1 < 0) {
+      return undefined;
+    } else {
+      return { row: row - 1, col: col - 1, value: this.grid[row - 1][col - 1] };
+    }
+  }
+
+  southEast(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
+    if (row + 1 >= this.rows() || col + 1 >= this.cols()) {
+      return undefined;
+    } else {
+      return { row: row + 1, col: col + 1, value: this.grid[row + 1][col + 1] };
+    }
+  }
+
+  southWest(rowOrObj, colParam) {
+    const { row, col } = this.paramsHelper(rowOrObj, colParam);
+    if (row + 1 >= this.rows() || col - 1 < 0) {
+      return undefined;
+    } else {
+      return { row: row + 1, col: col - 1, value: this.grid[row + 1][col - 1] };
     }
   }
 
